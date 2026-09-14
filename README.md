@@ -1,6 +1,6 @@
 # Ubirajara
 
-Ubirajara is a RISCV vector processor, still on development.
+Ubirajara is (or will be) a RISCV vector processor, still on development.
 
 ## Further documentations
 
