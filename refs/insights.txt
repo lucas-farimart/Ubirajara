@@ -1,0 +1,31 @@
+#################################################################################################
+https://link.springer.com/article/10.1007/s12046-026-03326-y
+The future of computing architecture: Evaluating RISC-V’s transformative potential
+Published: 17 September 2026
+#################################################################################################
+
+#################################################################################################
+https://www.mordorintelligence.com/pt/industry-reports/risc-v-tech-market
+ANÁLISE DE TAMANHO E PARTICIPAÇÃO DO MERCADO DE TECNOLOGIA RISC-V:
+TENDÊNCIAS DE CRESCIMENTO E PREVISÃO (2026 - 2031)
+#################################################################################################
+
+#################################################################################################
+https://www.marketreportsworld.com/market-reports/risc-v-cores-market-14713441
+RISC-V Cores Market Size, Share, Growth, and Industry Analysis:
+ - By Type (32-bit Cores, 64-bit Cores, Application-Specific Cores)
+ - By Application (Internet of Things (IoT), Embedded Systems, Consumer Electronics, Automotive)
+ - Regional Insights and 
+ - Forecast From 2026 To 2035
+#################################################################################################
+
+#################################################################################################
+RISC-V Brasil: 
+https://deepcomputing.io/event/risc-v-brazil/
+#################################################################################################
+
+#################################################################################################
+An Arbitrary Register Grouping Scheme for RISC-V Vector Extension: 
+Compilation Support and Hardware Implementation
+https://www.researchgate.net/publication/399168816_An_Arbitrary_Register_Grouping_Scheme_for_RISC-V_Vector_Extension_Compilation_Support_and_Hardware_Implementation/link/6979b6a564ca8a382086fede/download?_tp=eyJjb250ZXh0Ijp7ImZpcnN0UGFnZSI6InB1YmxpY2F0aW9uIiwicGFnZSI6InB1YmxpY2F0aW9uIn19 
+#################################################################################################
