@@ -2,7 +2,7 @@
 =========================================================================
 Executor sequencial de programa vetorial.
   Interpreta uma lista de Instruction, aplica seus efeitos sobre o
-  GoldenModel e registra cada passo no Trace. Apenas como referencia 
+  GoldenModel e registra cada passo no Trace. Apenas para referencia 
   funcional/comportamental da arquitetura.
 -------------------------------------------------------------------------
 Author: Lucas Farias Martins
@@ -15,6 +15,7 @@ Update: 25/09/2026
 from .instruction import Instruction, program_from_tuples
 from .golden_model import GoldenModel
 from .trace import Trace, TraceEntry
+from .vector_state import SEW
 
 class Executor:
     def __init__(self, model: GoldenModel = None):
@@ -60,7 +61,10 @@ class Executor:
 
     def _handle_vsetvli(self, index: int, instr: Instruction):
         vl = instr.operands["vl"]
-        effective_vl = self.model.vsetvli(requested_vl=vl)
+        sew = instr.operands.get("sew", SEW.SEW32)
+        lmul = instr.operands.get("lmul", 1)
+
+        effective_vl = self.model.vsetvli(requested_vl=vl, sew=sew, lmul=lmul)
 
         self.trace.add(TraceEntry(
             index=index,

@@ -1,0 +1,47 @@
+============================= test session starts ==============================
+platform linux -- Python 3.11.11, pytest-9.1.1, pluggy-1.6.0 -- /bin/python
+cachedir: .pytest_cache
+rootdir: /home/lucas.martins/workspace/Ubirajara
+plugins: anyio-4.13.0
+collecting ... collected 38 items
+
+model/tests/test_executor.py::test_simple_program_vadd PASSED            [  2%]
+model/tests/test_executor.py::test_program_with_load_and_store PASSED    [  5%]
+model/tests/test_executor.py::test_unknown_instruction_raises PASSED     [  7%]
+model/tests/test_executor.py::test_trace_is_reproducible_for_same_program PASSED [ 10%]
+model/tests/test_executor.py::test_trace_serialization_to_json PASSED    [ 13%]
+model/tests/test_golden_model.py::test_vl_zero_does_not_modify_destination PASSED [ 15%]
+model/tests/test_golden_model.py::test_vadd_vv_full_vl PASSED            [ 18%]
+model/tests/test_golden_model.py::test_vadd_vv_partial_vl_tail_undisturbed PASSED [ 21%]
+model/tests/test_golden_model.py::test_vadd_vv_with_mask PASSED          [ 23%]
+model/tests/test_golden_model.py::test_vsub_vv_overflow_wraps_mod_2_32 PASSED [ 26%]
+model/tests/test_golden_model.py::test_vand_vor_vxor PASSED              [ 28%]
+model/tests/test_golden_model.py::test_vadd_vv_randomized PASSED         [ 31%]
+model/tests/test_golden_model.py::test_vle32_v_contiguous_load PASSED    [ 34%]
+model/tests/test_golden_model.py::test_vse32_v_contiguous_store PASSED   [ 36%]
+model/tests/test_golden_model.py::test_vsetvli_clamps_to_vlmax PASSED    [ 39%]
+model/tests/test_golden_model.py::test_vle32_v_partial_vl_tail_undisturbed PASSED [ 42%]
+model/tests/test_sew_lmul.py::test_vlmax_sew8_lmul1 PASSED               [ 44%]
+model/tests/test_sew_lmul.py::test_vlmax_sew16_lmul1 PASSED              [ 47%]
+model/tests/test_sew_lmul.py::test_vlmax_sew32_lmul1 PASSED              [ 50%]
+model/tests/test_sew_lmul.py::test_vlmax_sew32_lmul2 PASSED              [ 52%]
+model/tests/test_sew_lmul.py::test_vlmax_sew8_lmul4 PASSED               [ 55%]
+model/tests/test_sew_lmul.py::test_vadd_vv_sew8 PASSED                   [ 57%]
+model/tests/test_sew_lmul.py::test_vadd_vv_sew8_overflow_wraps_mod_256 PASSED [ 60%]
+model/tests/test_sew_lmul.py::test_vadd_vv_sew32_lmul2_uses_register_group PASSED [ 63%]
+model/tests/test_sew_lmul.py::test_vadd_vv_invalid_base_reg_for_lmul_raises PASSED [ 65%]
+model/tests/test_sew_lmul.py::test_vle_vse_sew16_contiguous PASSED       [ 68%]
+model/tests/test_sew_lmul.py::test_partial_vl_tail_undisturbed_sew16 PASSED [ 71%]
+model/tests/test_sew_lmul.py::test_switching_sew_between_instructions PASSED [ 73%]
+model/tests/test_strip_mining.py::test_vlmax_is_four_for_current_config PASSED [ 76%]
+model/tests/test_strip_mining.py::test_program_exact_multiple_of_vlmax PASSED [ 78%]
+model/tests/test_strip_mining.py::test_program_with_residual_tail PASSED [ 81%]
+model/tests/test_strip_mining.py::test_program_smaller_than_vlmax PASSED [ 84%]
+model/tests/test_strip_mining.py::test_program_zero_elements_produces_empty_program PASSED [ 86%]
+model/tests/test_strip_mining.py::test_addresses_advance_correctly_between_iterations PASSED [ 89%]
+model/tests/test_strip_mining.py::test_end_to_end_exact_multiple PASSED  [ 92%]
+model/tests/test_strip_mining.py::test_end_to_end_with_residual_tail PASSED [ 94%]
+model/tests/test_strip_mining.py::test_end_to_end_single_residual_iteration PASSED [ 97%]
+model/tests/test_strip_mining.py::test_end_to_end_mismatched_lengths_raises PASSED [100%]
+
+============================== 38 passed in 0.06s ==============================
