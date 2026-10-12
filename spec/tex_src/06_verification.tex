@@ -1,0 +1,30 @@
+
+\section{Verificação existente}
+
+A suíte de testes cobre, entre outros casos:
+
+\begin{itemize}
+    \item aritmética vetorial e overflow modular;
+    \item política tail-undisturbed;
+    \item operações mascaradas;
+    \item loads e stores contíguos;
+    \item saturação de \texttt{vl} em VLMAX;
+    \item VLMAX para diferentes combinações de SEW e LMUL;
+    \item grupos de registradores com LMUL maior que 1;
+    \item reinterpretação dos mesmos bytes com SEW diferente;
+    \item construção de programas strip-mined;
+    \item endereços crescentes entre iterações;
+    \item execução end-to-end de vetores maiores que VLMAX;
+    \item serialização e repetibilidade do trace.
+\end{itemize}
+
+O último resultado observado foi:
+
+\begin{center}
+\textbf{31 testes aprovados e 7 testes falhos, de um total de 38.}
+\end{center}
+
+As sete falhas ocorreram no handler de \texttt{vsetvli} do executor,
+porque \texttt{SEW} foi referenciado sem estar importado em
+\texttt{model/executor.py}. As falhas afetam a execução de programas,
+incluindo os testes end-to-end de strip-mining.

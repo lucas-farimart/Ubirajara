@@ -1,0 +1,42 @@
+\section{Estado do projeto}
+
+\subsection{Decisões estabelecidas}
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{ll}
+\toprule
+\textbf{Parâmetro} & \textbf{Valor ou decisão} \\
+\midrule
+VLEN & 128 bits \\
+ELEN & 32 bits \\
+Elementos inteiros modelados & SEW de 8, 16 e 32 bits \\
+LMUL inteiro modelado & 1, 2, 4 e 8 \\
+Quantidade de registradores vetoriais físicos & 32 \\
+Endianness da memória & Little-endian \\
+Acesso vetorial à memória & Unit-stride, contíguo \\
+Política de cauda & Tail-undisturbed \\
+Política de máscara & Mask-undisturbed \\
+Execução do modelo & Sequencial, funcional e sem temporização \\
+\bottomrule
+\end{tabular}
+\caption{Parâmetros e decisões atuais do projeto.}
+\end{table}
+
+\subsection{Estado observado nos testes}
+
+Na última execução registrada de \texttt{pytest -v}, foram coletados
+38 testes: 31 passaram e 7 falharam. As falhas apontam para a mesma
+causa imediata: o nome \texttt{SEW} não está definido em
+\texttt{model/executor.py}, embora seja usado pelo handler de
+\texttt{vsetvli}.
+
+Portanto, os testes de estado, operações básicas, SEW/LMUL e geração
+estática do programa de strip-mining passaram. Os testes que executam
+programas pelo \texttt{Executor}, inclusive os testes end-to-end de
+strip-mining, falharam ao processar a primeira instrução
+\texttt{vsetvli}.
+
+Este resultado não deve ser descrito como uma suíte totalmente aprovada.
+A correção do import e a repetição da suíte são pendências antes de
+considerar a especificação executável validada integralmente.

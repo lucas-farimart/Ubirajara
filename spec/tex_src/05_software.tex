@@ -1,0 +1,49 @@
+\section{Modelo em software}
+
+A organização lógica atual do modelo Python é:
+
+\begin{verbatim}
+model/
+    vector_state.py
+    vector_isa.py
+    memory.py
+    golden_model.py
+    instruction.py
+    executor.py
+    trace.py
+    strip_mining.py
+    inspect_trace.py
+    tests/
+\end{verbatim}
+
+Responsabilidades principais:
+
+\begin{description}
+    \item[\texttt{vector\_state.py}]
+    Estado arquitetural, configuração SEW/LMUL e acesso lógico aos
+    registradores vetoriais.
+
+    \item[\texttt{vector\_isa.py}]
+    Semântica funcional das operações vetoriais.
+
+    \item[\texttt{memory.py}]
+    Memória endereçada por byte usada pelo modelo.
+
+    \item[\texttt{golden\_model.py}]
+    API de alto nível para o estado, operações e memória.
+
+    \item[\texttt{instruction.py}]
+    Representação e validação de instruções do programa.
+
+    \item[\texttt{executor.py}]
+    Interpretação sequencial do programa e geração do trace.
+
+    \item[\texttt{trace.py}]
+    Registro e serialização dos efeitos de execução.
+
+    \item[\texttt{strip\_mining.py}]
+    Geração de programas de processamento por blocos com residual.
+
+    \item[\texttt{inspect\_trace.py}]
+    Execução de um caso demonstrativo e impressão do trace.
+\end{description}

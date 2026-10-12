@@ -1,0 +1,158 @@
+% =============================================================
+%                ESTADO ARQUITETURAL DO MODELO
+% =============================================================
+\section{Estado arquitetural do modelo}
+
+O estado funcional do coprocessador contém:
+
+\begin{itemize}
+    \item 32 registradores vetoriais físicos;
+    \item o valor corrente de \texttt{vl};
+    \item o valor corrente de \texttt{vtype}, composto por SEW e LMUL;
+    \item a memória usada pelos testes de load e store.
+\end{itemize}
+
+\subsection{Representação física dos registradores}
+
+Cada registrador vetorial físico é representado como uma sequência de
+16 bytes. Essa representação permite reinterpretar o mesmo estado físico
+sob diferentes valores de SEW.
+
+Por exemplo, os mesmos 16 bytes correspondem a:
+
+\begin{itemize}
+    \item 16 elementos de 8 bits;
+    \item 8 elementos de 16 bits;
+    \item 4 elementos de 32 bits.
+\end{itemize}
+
+A ordem dos bytes dentro de um elemento é little-endian.
+
+\subsection{Grupos de registradores}
+
+Quando LMUL é maior que 1, um registrador lógico ocupa um grupo
+consecutivo de registradores físicos. O tamanho do grupo é igual a LMUL.
+
+O índice inicial do grupo deve ser múltiplo de LMUL. O grupo também deve
+permanecer dentro dos 32 registradores físicos.
+
+Exemplos:
+
+\begin{itemize}
+    \item LMUL igual a 2: índices-base válidos são 0, 2, 4, \ldots, 30;
+    \item LMUL igual a 4: índices-base válidos são 0, 4, 8, \ldots, 28;
+    \item LMUL igual a 8: índices-base válidos são 0, 8, 16 e 24.
+\end{itemize}
+
+A leitura e escrita de elementos lógicos concatenam, em ordem crescente,
+o conteúdo dos registradores físicos que compõem o grupo.
+
+% =============================================================
+%                  ESPECIFICAÇÃO EXECUTÁVEL
+% =============================================================
+\section{Especificação executável}
+
+\subsection{Programa}
+
+O programa funcional é representado como uma lista ordenada de pares
+compostos por mnemônico e operandos nomeados.
+
+Exemplo conceitual:
+
+\begin{verbatim}
+[
+    ("vsetvli", {"vl": 4, "sew": 32, "lmul": 1}),
+    ("vadd.vv", {"vd": 3, "vs1": 1, "vs2": 2})
+]
+\end{verbatim}
+
+A classe \texttt{Instruction} valida o mnemônico e os operandos de cada
+instrução antes da execução. O executor processa a lista em ordem,
+aplicando cada instrução ao estado do modelo.
+
+\subsection{Execução sequencial}
+
+O executor atual é funcional e sequencial:
+
+\begin{enumerate}
+    \item valida ou normaliza a instrução;
+    \item identifica o handler correspondente;
+    \item executa a operação sobre o modelo;
+    \item registra os efeitos observáveis no trace.
+\end{enumerate}
+
+Não há modelagem de ciclo, pipeline, issue múltiplo, hazards,
+interrupções, flush ou concorrência de memória.
+
+\subsection{Trace}
+
+O trace registra uma entrada por instrução executada. Os campos atuais
+incluem:
+
+\begin{itemize}
+    \item índice da instrução;
+    \item mnemônico;
+    \item operandos;
+    \item valor de \texttt{vl} durante a execução;
+    \item registradores de destino observados;
+    \item escritas de memória observadas, quando aplicável.
+\end{itemize}
+
+O trace pode ser serializado em JSON. Valores incluídos no JSON devem
+ser tipos serializáveis, como inteiros, strings, listas e dicionários.
+Valores de memória não devem ser armazenados como objetos \texttt{bytes}
+sem uma conversão explícita.
+
+% =============================================================
+%                       STRIP-MINING
+% =============================================================
+\section{Strip-mining e tamanho residual}
+
+O suporte atual a strip-mining gera uma sequência de instruções para
+processar um vetor lógico maior que VLMAX.
+
+Para um número total de elementos |$N$|, cada iteração escolhe:
+
+|$$
+vl_{\text{iter}} = \min(N_{\text{remaining}},VLMAX).
+$$|
+
+Após cada iteração:
+
+|$$
+offset_{\text{elements}} \leftarrow
+offset_{\text{elements}} + vl_{\text{iter}},
+$$|
+
+|$$
+N_{\text{remaining}} \leftarrow
+N_{\text{remaining}} - vl_{\text{iter}}.
+$$|
+
+Um kernel de soma contígua executa, em cada iteração:
+
+\begin{enumerate}
+    \item configuração de \texttt{vl};
+    \item load do trecho corrente do vetor A;
+    \item load do trecho corrente do vetor B;
+    \item soma dos registradores vetoriais;
+    \item store do trecho corrente do resultado.
+\end{enumerate}
+
+Para VLEN igual a 128, SEW igual a 32 e LMUL igual a 1,
+|$VLMAX=4$|. Um vetor de 10 elementos é processado com comprimentos:
+
+|$$
+4,\ 4,\ 2.
+$$|
+
+O avanço de endereço entre iterações é calculado em bytes:
+
+|$$
+offset_{\text{bytes}} =
+offset_{\text{elements}} \times element\_bytes.
+$$|
+
+A implementação inicial de strip-mining foi escrita para SEW igual a
+32 e LMUL igual a 1. Sua generalização para SEW e LMUL variáveis ainda
+é uma pendência.

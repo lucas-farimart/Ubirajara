@@ -1,0 +1,79 @@
+\section{Semântica funcional}
+
+\subsection{Operações inteiras elemento a elemento}
+
+O conjunto de operações aritméticas e lógicas considerado nesta etapa é:
+
+\begin{itemize}
+    \item soma vetorial;
+    \item subtração vetorial;
+    \item AND bit a bit;
+    \item OR bit a bit;
+    \item XOR bit a bit.
+\end{itemize}
+
+Para uma operação binária com destino |$vd$| e fontes |$vs1$| e |$vs2$|,
+cada elemento ativo |$i$|, em que |$0 \leq i < vl$|, é calculado como:
+
+|$$
+vd[i] = f(vs1[i],vs2[i]).
+$$|
+
+O resultado é truncado para SEW bits. Para soma e subtração, isso
+corresponde a aritmética modular:
+
+|$$
+vd[i] = f(vs1[i],vs2[i]) \bmod 2^{SEW}.
+$$|
+
+\subsection{Política de cauda}
+
+A política definida para esta versão é tail-undisturbed. Elementos do
+destino com índice |$i \geq vl$| preservam seu valor anterior.
+
+|$$
+vd_{\text{new}}[i] = vd_{\text{old}}[i], \qquad i \geq vl.
+$$|
+
+\subsection{Política de máscara}
+
+A interface funcional aceita, quando aplicável, uma máscara representada
+por uma sequência de valores booleanos. Para um elemento ativo dentro de
+\texttt{vl}:
+
+|$$
+vd_{\text{new}}[i] =
+\begin{cases}
+f(vs1[i],vs2[i]), & mask[i] = 1, \\
+vd_{\text{old}}[i], & mask[i] = 0.
+\end{cases}
+$$|
+
+A política é mask-undisturbed. A validação de tamanho da máscara deve
+garantir que todos os índices consultados existam. O formato arquitetural
+final do registrador de máscara ainda não foi especificado.
+
+\subsection{Loads e stores contíguos}
+
+O modelo inclui cargas e stores unit-stride. Para um elemento de largura
+SEW:
+
+|$$
+element\_bytes = \frac{SEW}{8}.
+$$|
+
+O endereço do elemento |$i$| é:
+
+|$$
+address(i) = base + i \times element\_bytes.
+$$|
+
+A memória é endereçada por byte e usa little-endian. Loads respeitam
+\texttt{vl}, máscara e política de cauda. Stores escrevem apenas os
+elementos ativos, isto é, aqueles com |$0 \leq i < vl$| e máscara ativa.
+
+O nome atual das operações de memória precisa ser consolidado. O modelo
+foi generalizado para operações dependentes do SEW, mas o executor e
+alguns testes ainda usam nomes \texttt{vle32.v} e \texttt{vse32.v}.
+Esses nomes sugerem EEW fixo de 32 bits e podem não corresponder à
+largura efetivamente usada pelo modelo.

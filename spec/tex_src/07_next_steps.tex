@@ -1,0 +1,90 @@
+
+\section{Pendências e riscos conhecidos}
+
+\begin{enumerate}
+    \item Importar \texttt{SEW} em \texttt{model/executor.py} e repetir
+    toda a suíte de testes.
+
+    \item Validar explicitamente o domínio de \texttt{requested\_vl},
+    \texttt{sew}, \texttt{lmul}, índices de registradores e tamanhos de
+    máscaras.
+
+    \item Definir se as instruções de memória terão EEW fixo no mnemônico,
+    como \texttt{vle8.v}, \texttt{vle16.v} e \texttt{vle32.v}, ou se
+    haverá uma operação genérica dependente do SEW ativo. A decisão deve
+    evitar que o nome da instrução contradiga seu comportamento.
+
+    \item Generalizar o gerador strip-mined para receber SEW e LMUL e
+    calcular VLMAX, tamanho do elemento e alinhamento de registradores
+    de forma dinâmica.
+
+    \item Revisar a representação de \texttt{mem\_writes} no trace para
+    que seja consistente quanto ao tipo das chaves de endereço e ao
+    formato dos valores.
+
+    \item Formalizar a semântica de troca de SEW e LMUL entre instruções,
+    em especial como as políticas de cauda se relacionam com a
+    reinterpretação física dos registradores.
+
+    \item Especificar estados de erro e acessos inválidos à memória.
+    O modelo atual usa exceções Python, mas ainda não define equivalentes
+    arquiteturais de traps.
+
+    \item Distinguir claramente EEW de memória e SEW. A simplificação
+    atual pode tratar ambos como iguais, mas isso deve ser registrado
+    como limitação até que a semântica RVV correspondente seja
+    implementada.
+
+    \item Determinar se a meta é uma extensão customizada inspirada em
+    RVV ou um subconjunto compatível com uma versão específica da
+    especificação RVV. O formato atual de programa Python não é, por si
+    só, um encoding binário RISC-V.
+\end{enumerate}
+
+\section{Critérios para o próximo marco}
+
+A especificação executável poderá ser considerada estável para esta
+etapa quando:
+
+\begin{itemize}
+    \item todos os testes passarem a partir da raiz do projeto;
+    \item os testes incluírem execução de programas com SEW e LMUL
+    explicitamente variados;
+    \item o strip-mining funcionar com mais de uma configuração de
+    elemento e grupo;
+    \item o trace JSON representar corretamente as escritas de memória;
+    \item as regras de validação estiverem descritas e testadas;
+    \item um ou mais programas de referência tiverem resultados
+    reproduzíveis e documentados.
+\end{itemize}
+
+\section{Migração futura para SystemC}
+
+A próxima etapa de modelagem deverá preservar a separação conceitual
+entre:
+
+\begin{itemize}
+    \item estado arquitetural;
+    \item interpretação e validação de instruções;
+    \item execução funcional;
+    \item registro de efeitos observáveis.
+\end{itemize}
+
+A primeira versão SystemC poderá continuar sem modelar temporização
+detalhada, mas deverá manter o mesmo comportamento arquitetural e
+produzir resultados comparáveis com os traces do Python. A modelagem
+de ciclos, latências e protocolos deve ser adicionada em uma etapa
+separada, para não misturar divergências funcionais com diferenças
+temporais.
+
+\section{Histórico deste documento}
+
+\begin{longtable}{p{2.5cm}p{10.5cm}}
+\toprule
+\textbf{Versão} & \textbf{Descrição} \\
+\midrule
+0.1 & Registro inicial dos parâmetros, da semântica funcional e do
+estado observado do modelo Python. Inclui pendências identificadas na
+suíte de testes. \\
+\bottomrule
+\end{longtable}

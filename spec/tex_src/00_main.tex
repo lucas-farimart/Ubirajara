@@ -1,0 +1,138 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[brazil]{babel}
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\geometry{
+    left=2.5cm,
+    right=2.5cm,
+    top=2.5cm,
+    bottom=2.5cm
+}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    urlcolor=blue,
+    citecolor=blue,
+    pdftitle={Especificacao do Estado Atual do Coprocessador Vetorial RISC-V},
+    pdfauthor={Projeto autoral}
+}
+
+\setlist[itemize]{topsep=3pt,itemsep=2pt}
+\setlist[enumerate]{topsep=3pt,itemsep=2pt}
+
+\title{
+    \textbf{Especificação do Estado Atual do Projeto}\\
+    \large Modelo Executável de um Coprocessador Vetorial RISC-V
+}
+\author{Projeto autoral}
+\date{\today}
+
+\begin{document}
+
+% \maketitle
+
+\begin{titlepage}
+    \centering
+
+    \vspace*{0.22\textheight}
+
+    {\Huge\bfseries UBIRA-V\par}
+    \vspace{0.5cm}
+    {\LARGE Especificacao de Projeto de um Coprocessador Vetorial RISC-V\par}
+
+    \vspace{1.5cm}
+
+    {\Large Lucas Farias Martins\par}
+
+    \vfill
+
+    {\large 12 de outubro de 2026\par}
+\end{titlepage}
+
+\clearpage
+
+% =============================================================
+%                _   _       _               _   
+%               /_\ | |__ __| |_ _ _ __ _ __| |_ 
+%              / _ \| '_ (_-<  _| '_/ _` / _|  _|
+%             /_/ \_\_.__/__/\__|_| \__,_\__|\__|                                    
+% =============================================================
+
+\begin{abstract}
+    Este documento registra o estado atual do projeto de um coprocessador
+    vetorial inspirado na arquitetura RISC-V. O foco desta etapa é a
+    especificação funcional executável em Python, anterior à migração para
+    SystemC e à implementação RTL em SystemVerilog.
+    
+    A configuração física adotada é VLEN igual a 128 bits. O modelo está
+    sendo generalizado para suportar elementos inteiros de 8, 16 e 32 bits,
+    bem como grupos de registradores com LMUL igual a 1, 2, 4 ou 8. A
+    especificação também descreve operações inteiras, cargas e stores
+    contíguos, execução sequencial de programas, política de cauda e
+    processamento de vetores maiores que VLMAX por strip-mining.
+    
+    O documento distingue decisões de projeto, comportamento pretendido,
+    funcionalidades presentes no modelo e pendências identificadas durante
+    a execução dos testes.
+\end{abstract}
+    
+\clearpage
+
+\tableofcontents
+
+\clearpage
+
+% =============================================================
+%                      OBJETIVO E ESCOPO
+% =============================================================
+
+\section{Objetivo e escopo}
+
+O objetivo do projeto é desenvolver um coprocessador vetorial para
+pesquisa arquitetural, com foco futuro em uma implementação sintetizável
+para ASIC.
+
+O fluxo de desenvolvimento definido é:
+
+\begin{enumerate}
+    \item modelo funcional executável em Python;
+    \item modelo temporal ou de arquitetura em SystemC;
+    \item implementação RTL em SystemVerilog;
+    \item simulação e verificação com Xcelium e SimVision;
+    \item síntese e análise de área e temporização com Genus.
+\end{enumerate}
+
+Esta versão documenta o modelo funcional. Ela não especifica pipeline,
+latência de hardware, protocolo de memória RTL, exceções arquiteturais
+completas, interface com um processador escalar ou desempenho físico.
+
+\clearpage
+
+% =============================================================
+%                ___         _   _             
+%               / __| ___ __| |_(_)___ _ _  ___
+%               \__ \/ -_) _|  _| / _ \ ' \(_-<
+%               |___/\___\__|\__|_\___/_||_/__/
+% =============================================================
+
+\input{tex_src/01_status}
+\input{tex_src/02_parameters}
+\input{tex_src/03_architecture}
+\input{tex_src/04_semantics}
+\input{tex_src/05_software}
+\input{tex_src/06_verification}
+\input{tex_src/07_next_steps}
+% \input{tex_src/08_revision_history}
+
+\end{document}

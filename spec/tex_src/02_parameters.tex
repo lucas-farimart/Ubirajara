@@ -1,0 +1,75 @@
+\section{Parâmetros arquiteturais}
+
+\subsection{Largura física}
+
+Cada registrador vetorial físico tem largura:
+
+|$$
+VLEN = 128 \text{ bits} = 16 \text{ bytes}.
+$$|
+
+O banco contém 32 registradores físicos, indexados de 0 a 31.
+
+\subsection{Largura do elemento}
+
+A largura do elemento selecionado, denominada SEW, pode assumir os
+valores suportados pelo modelo:
+
+|$$
+SEW \in \{8,16,32\} \text{ bits}.
+$$|
+
+O maior elemento suportado é:
+
+|$$
+ELEN = 32 \text{ bits}.
+$$|
+
+Nesta etapa, os valores são tratados como inteiros sem sinal para
+representação e como inteiros de largura fixa para as operações
+aritméticas. A aritmética modular é definida pela largura do elemento.
+
+\subsection{LMUL}
+
+A configuração LMUL suportada nesta versão é:
+
+|$$
+LMUL \in \{1,2,4,8\}.
+$$|
+
+A implementação não inclui multiplicadores fracionários de registradores,
+como LMUL igual a |$1/2$|, |$1/4$| ou |$1/8$|.
+
+\subsection{VLMAX}
+
+Para os valores inteiros de LMUL implementados, o número máximo de
+elementos ativos em um grupo vetorial é:
+
+|$$
+VLMAX = \frac{VLEN}{SEW} \times LMUL.
+$$|
+
+Exemplos:
+
+\begin{center}
+\begin{tabular}{ccc}
+\toprule
+SEW & LMUL & VLMAX \\
+\midrule
+8  & 1 & 16 \\
+16 & 1 & 8 \\
+32 & 1 & 4 \\
+32 & 2 & 8 \\
+8  & 4 & 64 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+O comprimento efetivo do vetor, \texttt{vl}, é limitado a VLMAX:
+
+|$$
+vl = \min(vl_{\text{requested}}, VLMAX).
+$$|
+
+O tratamento de valores negativos para \texttt{vl} ainda deve ser
+formalizado e validado explicitamente.
